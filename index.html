@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Finance 247 redesigns</title>
+<meta name="description" content="Links to the Car Finance 247 redesign prototypes: help and guides, PistonHeads landing page, homepage and apply form.">
+<meta name="robots" content="noindex">
+<style>
+  :root { --purple: #6905F2; --purple-10: #F0E6FE; --purple-30: #D2B4FB; --page: #ECE6F7; --ink: #160132; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.5; background: var(--page); color: var(--ink); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  header { padding: 40px 0 8px; }
+  h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.25rem); line-height: 1.15; color: var(--purple); }
+  .intro { margin: 10px 0 0; max-width: 40rem; color: rgba(22, 1, 50, .75); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; padding: 24px 0 56px; }
+
+  .card { display: grid; grid-template-rows: auto 1fr; gap: 14px; padding: 14px 14px 18px; color: inherit; text-decoration: none;
+    background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 18px 40px -30px rgba(22, 1, 50, .5); transition: transform .25s ease, box-shadow .25s ease; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(105, 5, 242, .35), 0 24px 44px -28px rgba(22, 1, 50, .6); }
+  .card:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+
+  /* The mini browser window: a small title bar over a scaled-down copy of the real page */
+  .win { overflow: hidden; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
+  .bar { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: #F3EFF9; border-bottom: 1px solid rgba(22, 1, 50, .1); }
+  .bar i { width: 9px; height: 9px; border-radius: 50%; background: #cbc3dc; }
+  .addr { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; color: rgba(22, 1, 50, .6); }
+  .view { position: relative; overflow: hidden; background: #fff; }
+  .view iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: top left; pointer-events: none; background: #fff; }
+
+  .text h2 { margin: 0; font-size: 1.25rem; line-height: 1.25; }
+  .text p { margin: 6px 0 0; font-size: .9375rem; color: rgba(22, 1, 50, .75); }
+  .go { display: inline-flex; align-items: center; gap: 6px; align-self: end; font-weight: 700; color: var(--purple); }
+  .go svg { width: 12px; height: 12px; transition: transform .25s ease; }
+  .card:hover .go svg { transform: translateX(3px); }
+
+  footer { padding: 0 0 40px; font-size: .8125rem; color: rgba(22, 1, 50, .6); }
+
+  @media (prefers-reduced-motion: reduce) { .card, .go svg { transition: none; } .card:hover { transform: none; } .card:hover .go svg { transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Car Finance 247 redesigns</h1>
+    <p class="intro">The design prototypes in one place. Each window is a live, scaled-down view of the real page. Select a card to open it.</p>
+  </header>
+  <main>
+    <div class="grid" id="grid">
+      <noscript><p>Enable JavaScript to see the previews. Links:
+        <a href="https://louis-b-work.github.io/help-guides/compare/">Help and guides homepage</a>,
+        <a href="https://louis-b-work.github.io/lp-pistonheads/">PistonHeads landing page</a>,
+        <a href="https://louis-b-work.github.io/cf247/">Car Finance 247 homepage</a>,
+        <a href="https://louis-b-work.github.io/apply/">Apply form</a>.</p></noscript>
+    </div>
+  </main>
+  <footer>Add or reorder prototypes in the DESIGNS list at the bottom of this file.</footer>
+</div>
+
+<script>
+// One entry per prototype. size is the width and height the page is laid out at before it is scaled into its window.
+const DESIGNS = [
+  { title: "Help & Guides homepage",
+    description: "Side-by-side comparison of today's guides page, the redesigns in the current and new brand, and the SEO wireframe.",
+    url: "https://louis-b-work.github.io/help-guides/compare/", size: [1280, 800] },
+  { title: "PistonHeads landing page",
+    description: "The PistonHeads advert landing page: today's page next to the redesign and the minimal redesign.",
+    url: "https://louis-b-work.github.io/lp-pistonheads/", size: [1280, 800] },
+  { title: "Car Finance 247 homepage",
+    description: "The homepage mockup, with a cog for comparing fonts, weights and the refinance landing page.",
+    url: "https://louis-b-work.github.io/cf247/", size: [1280, 800] },
+  { title: "Apply form",
+    description: "The apply form redesign prototype: each step where people leave, built as a switch so it can be A/B tested.",
+    url: "https://louis-b-work.github.io/apply/", size: [1280, 800] }
+];
+
+// The prototypes open a welcome dialog on load. Inside a preview window it would cover the page, so it is hidden with CSS
+// (nothing is clicked, so no saved choices change). All four pages are on the same origin, which is what allows this.
+const CALM_CSS = [
+  '[role="dialog"]', '[aria-modal="true"]', '#intro', '[class*="bg-blackcurrant/"][class*="fixed"]',
+  'html, body { overflow: hidden !important; }'
+];
+const calmCss = CALM_CSS.slice(0, -1).join(",") + "{display:none !important}" + CALM_CSS[CALM_CSS.length - 1];
+
+const CHEVRON = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2l4 4-4 4"/></svg>';
+const grid = document.getElementById("grid");
+const views = [];
+
+DESIGNS.forEach((d) => {
+  const [w, h] = d.size;
+  const a = document.createElement("a");
+  a.className = "card";
+  a.href = d.url;
+
+  const win = document.createElement("div");
+  win.className = "win";
+  win.setAttribute("aria-hidden", "true");
+  const bar = document.createElement("div");
+  bar.className = "bar";
+  bar.innerHTML = "<i></i><i></i><i></i><span class='addr'></span>";
+  bar.querySelector(".addr").textContent = d.url.replace(/^https?:\/\//, "");
+  const view = document.createElement("div");
+  view.className = "view";
+  view.style.aspectRatio = w + " / " + h;
+  const f = document.createElement("iframe");
+  f.src = d.url;
+  f.title = d.title + " preview";
+  f.loading = "lazy";
+  f.tabIndex = -1;
+  f.setAttribute("sandbox", "allow-scripts allow-same-origin");
+  f.style.width = w + "px";
+  f.style.height = h + "px";
+  f.addEventListener("load", () => {
+    try {
+      const s = f.contentDocument.createElement("style");
+      s.textContent = calmCss;
+      f.contentDocument.head.appendChild(s);
+    } catch (e) { /* not same-origin: leave the page as it is */ }
+  });
+  view.appendChild(f);
+  win.append(bar, view);
+
+  const text = document.createElement("div");
+  text.className = "text";
+  text.innerHTML = "<h2></h2><p></p>";
+  text.querySelector("h2").textContent = d.title;
+  text.querySelector("p").textContent = d.description;
+  const go = document.createElement("span");
+  go.className = "go";
+  go.innerHTML = "Open prototype " + CHEVRON;
+
+  const body = document.createElement("div");
+  body.append(text);
+  a.append(win, body, go);
+  grid.appendChild(a);
+  views.push({ view, f, w });
+});
+
+// Scale each page down so it fills its window exactly.
+function fit() { views.forEach(({ view, f, w }) => { f.style.transform = "scale(" + view.clientWidth / w + ")"; }); }
+new ResizeObserver(fit).observe(grid);
+fit();
+</script>
+</body>
+</html>
