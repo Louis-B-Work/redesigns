@@ -45,10 +45,13 @@
   .tab:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
   [hidden] { display: none !important; }
 
-  .emails { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 660px), 1fr)); gap: 24px; padding: 24px 0 56px; }
+  /* breaks out of the 1120px column so two full 600px headers fit side by side */
+  .emails { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 24px 0 56px; width: min(1320px, 100vw - 40px); position: relative; left: 50%; transform: translateX(-50%); }
   .email { padding: 14px 14px 18px; background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 18px 40px -30px rgba(22, 1, 50, .5); }
   .email h2 { margin: 0 0 10px; font-size: 1.125rem; line-height: 1.25; }
   .email iframe { display: block; width: 100%; max-width: 600px; height: 200px; margin: 0 auto; border: 0; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
+
+  @media (max-width: 900px) { .emails { grid-template-columns: minmax(0, 1fr); } }
 
   footer { padding: 0 0 40px; font-size: .8125rem; color: rgba(22, 1, 50, .6); }
 
