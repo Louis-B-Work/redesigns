@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>We've got your application</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  img { border: 0; display: block; }
+  body { background: #f4f4f4; font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+  /* Mockup toolbar - not part of the email */
+  .toolbar { background: #1a1a1a; color: #fff; padding: 10px 16px; font-size: 13px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .toolbar select, .toolbar input { font: inherit; padding: 4px 8px; border-radius: 4px; border: 0; }
+  .toolbar input { width: 340px; max-width: 100%; }
+
+  .email { max-width: 600px; width: 100%; margin: 0 auto; background: #fff; }
+
+  .header { background: #6905f2; padding: 24px 40px 0; }
+  .header-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; }
+  .header-row .cf-logo { width: 90px; height: auto; }
+  .partner { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .partner-label { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1; color: #fff; font-weight: 400; letter-spacing: -0.02em; }
+  .partner-logo { width: 168px; }
+  .partner-logo img { width: 100%; height: auto; }
+  /* for full-colour logos that don't work directly on purple */
+  .partner-logo.boxed { height: 48px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .partner-logo.boxed img { height: 100%; object-fit: contain; }
+  .hero { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -0.02em; padding-bottom: 28px; }
+
+  .app-id { background: #00d4b5; padding: 12px 40px; font-size: 11px; font-weight: 700; color: #000; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .body { padding: 36px 40px 36px; color: #333; }
+  .body .greeting { font-size: 17px; font-weight: 500; color: #1a1a1a; line-height: 1.6; margin-bottom: 16px; }
+  .body p { font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+  .body p:last-child { margin-bottom: 0; }
+
+  .footer { background: #1a1a1a; }
+  .footer-inner { max-width: 600px; margin: 0 auto; }
+  .rule { margin: 0 32px; border-top: 1px solid #333; }
+  .footer .logo { padding: 28px 32px 20px; }
+  .footer .logo img { width: 64px; height: 54px; }
+  .footer h4 { padding: 0 32px 12px; font-size: 13px; font-weight: 700; color: #fff; line-height: 1.4; }
+  .social { padding: 0 32px 24px; display: flex; gap: 16px; font-size: 12px; }
+  .social a { color: #fff; text-decoration: none; }
+  .stores { padding: 0 32px 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .stores img { height: 40px; }
+  .hours { padding: 0 32px 24px; font-size: 13px; color: #fff; line-height: 1.5; }
+  .hours div { display: flex; padding-bottom: 6px; }
+  .hours span:first-child { width: 120px; }
+  .legal { padding: 20px 32px 0; }
+  .legal p { font-size: 11px; color: #999; line-height: 1.6; margin-bottom: 12px; }
+  .legal p:last-child { margin-bottom: 20px; }
+  .links { padding: 0 32px 20px; display: flex; gap: 20px; font-size: 12px; }
+  .links a { color: #00d4b5; text-decoration: underline; }
+  .copyright { padding: 0 32px 32px; font-size: 11px; color: #666; line-height: 1.5; }
+
+  @media (max-width: 480px) {
+    .header, .app-id, .body { padding-left: 20px; padding-right: 20px; }
+    .hero { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="email">
+  <div class="header">
+    <div class="header-row">
+      <img class="cf-logo" alt="Car Finance 247" src="https://cdn.mcauto-images-production.sendgrid.net/afded0f9e9ea6e2b/a0731cbb-a47c-4ac7-a0ff-9a941c49d273/152x128.png">
+      <div class="partner">
+        <span class="partner-label">In partnership with</span>
+        <div class="partner-logo">
+          <img id="partnerLogo" alt="MoneySuperMarket" src="logos/msm-1-white.svg">
+        </div>
+      </div>
+    </div>
+    <div class="hero">We’ve got your application</div>
+  </div>
+
+</div>
+
+<script>
+  // Partner swaps are driven by the toolbar in compare.html
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type !== 'partner') return;
+    var logo = document.getElementById('partnerLogo');
+    if (d.url) logo.src = d.url;
+    logo.alt = d.name;
+    logo.parentNode.classList.toggle('boxed', !!d.boxed);
+    document.getElementById('partnerName').textContent = d.name;
+  });
+</script>
+</body>
+</html>

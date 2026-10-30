@@ -38,6 +38,18 @@
   .go svg { width: 12px; height: 12px; transition: transform .25s ease; }
   .card:hover .go svg { transform: translateX(3px); }
 
+  .tabs { display: flex; gap: 8px; margin-top: 24px; }
+  .tab { font: inherit; font-weight: 700; padding: 8px 16px; border: 0; border-radius: 999px; cursor: pointer; background: transparent; color: var(--purple); }
+  .tab:hover { background: var(--purple-10); }
+  .tab[aria-selected="true"] { background: var(--purple); color: #fff; }
+  .tab:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+
+  .emails { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; padding: 24px 0 56px; }
+  .email { padding: 14px 14px 18px; background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 18px 40px -30px rgba(22, 1, 50, .5); }
+  .email h2 { margin: 0 0 10px; font-size: 1.125rem; line-height: 1.25; }
+  .email iframe { display: block; width: 100%; height: 200px; border: 0; border-radius: 8px; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
+
   footer { padding: 0 0 40px; font-size: .8125rem; color: rgba(22, 1, 50, .6); }
 
   @media (prefers-reduced-motion: reduce) { .card, .go svg { transition: none; } .card:hover { transform: none; } .card:hover .go svg { transform: none; } }
@@ -48,9 +60,16 @@
   <header>
     <h1>Car Finance 247 redesigns</h1>
     <p class="intro">The design prototypes in one place. Each window is a live, scaled-down view of the real page. Select a card to open it.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-prototypes" aria-controls="panel-prototypes" aria-selected="true">Prototypes</button>
+      <button class="tab" role="tab" id="tab-emails" aria-controls="panel-emails" aria-selected="false">Email headers</button>
+    </div>
   </header>
   <main>
-    <div class="grid" id="grid">
+    <section id="panel-emails" role="tabpanel" aria-labelledby="tab-emails" hidden>
+      <div class="emails" id="emails"></div>
+    </section>
+    <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-prototypes">
       <noscript><p>Enable JavaScript to see the previews. Links:
         <a href="https://louis-b-work.github.io/help-guides/compare/">Help and guides homepage</a>,
         <a href="https://louis-b-work.github.io/help-guides/compare-am-i-eligible/">Am I Eligible guide category</a>,
@@ -148,6 +167,49 @@ DESIGNS.forEach((d) => {
 function fit() { views.forEach(({ view, f, w }) => { f.style.transform = "scale(" + view.clientWidth / w + ")"; }); }
 new ResizeObserver(fit).observe(grid);
 fit();
+
+// Email headers: the application received email header, today's and the new brand, for each partner.
+// Each page is sent its partner logo once it has loaded (paths are relative to the emails folder).
+const EMAILS = [
+  { title: "MoneySuperMarket: current", page: "emails/application-received-current.html",
+    cfg: { url: "https://www.carfinance247.co.uk/dA/faaae631c4/msm_logo_v2.webp?t=20261021104240", name: "MoneySuperMarket" } },
+  { title: "MoneySuperMarket: new", page: "emails/application-received.html",
+    cfg: { url: "logos/msm-1-white.svg", name: "MoneySuperMarket" } },
+  { title: "CarGurus: current", page: "emails/application-received-current.html",
+    cfg: { url: "logos/car-gurus.webp", name: "CarGurus" } },
+  { title: "CarGurus: new", page: "emails/application-received.html",
+    cfg: { url: "logos/car-gurus-white.png", name: "CarGurus" } }
+];
+const emails = document.getElementById("emails");
+EMAILS.forEach((e) => {
+  const box = document.createElement("div");
+  box.className = "email";
+  const h = document.createElement("h2");
+  h.textContent = e.title;
+  const f = document.createElement("iframe");
+  f.title = e.title;
+  f.loading = "lazy";
+  f.addEventListener("load", () => f.contentWindow.postMessage({ type: "partner", url: e.cfg.url, name: e.cfg.name }, "*"));
+  f.src = e.page;
+  box.append(h, f);
+  emails.appendChild(box);
+});
+
+// Tabs: Prototypes (default) and Email headers, kept in the URL hash so a tab can be linked to.
+const TABS = ["prototypes", "emails"];
+const panels = { prototypes: grid, emails: document.getElementById("panel-emails") };
+function showTab(name) {
+  TABS.forEach((t) => {
+    panels[t].hidden = t !== name;
+    document.getElementById("tab-" + t).setAttribute("aria-selected", String(t === name));
+  });
+  fit();
+}
+TABS.forEach((t) => document.getElementById("tab-" + t).addEventListener("click", () => {
+  history.replaceState(null, "", t === "prototypes" ? location.pathname : "#" + t);
+  showTab(t);
+}));
+showTab(location.hash === "#emails" ? "emails" : "prototypes");
 </script>
 </body>
 </html>
