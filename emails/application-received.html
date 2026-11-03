@@ -23,10 +23,10 @@
   .partner { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
   .partner-label { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1; color: #fff; font-weight: 400; letter-spacing: -0.02em; }
   .partner-logo { width: 168px; }
-  .partner-logo img { width: 100%; height: auto; }
+  .partner-logo img { width: 100%; height: auto; max-height: 44px; object-fit: contain; object-position: right center; }
   /* for full-colour logos that don't work directly on purple */
-  .partner-logo.boxed { height: 48px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .partner-logo.boxed img { height: 100%; object-fit: contain; }
+  .partner-logo.boxed { height: 48px; padding: 4px 10px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .partner-logo.boxed img { width: auto; max-width: 100%; height: 100%; max-height: none; object-position: center; }
   .hero { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -0.02em; padding-bottom: 28px; }
 
   .app-id { background: #00d4b5; padding: 12px 40px; font-size: 11px; font-weight: 700; color: #000; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -89,7 +89,8 @@
     if (d.url) logo.src = d.url;
     logo.alt = d.name;
     logo.parentNode.classList.toggle('boxed', !!d.boxed);
-    document.getElementById('partnerName').textContent = d.name;
+    logo.style.filter = d.filter ? 'brightness(0) invert(1)' : '';
+    document.querySelector('.partner-label').style.display = d.label === false ? 'none' : '';
   });
 </script>
 </body>

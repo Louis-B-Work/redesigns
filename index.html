@@ -74,16 +74,17 @@
     </section>
     <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-prototypes">
       <noscript><p>Enable JavaScript to see the previews. Links:
-        <a href="https://louis-b-work.github.io/help-guides/compare/">Help and guides homepage</a>,
-        <a href="https://louis-b-work.github.io/help-guides/compare-am-i-eligible/">Am I Eligible guide category</a>,
-        <a href="https://louis-b-work.github.io/lp-pistonheads/">PistonHeads landing page</a>,
-        <a href="https://louis-b-work.github.io/cf247/">Car Finance 247 homepage</a>,
-        <a href="https://louis-b-work.github.io/apply/">Apply form</a>.</p></noscript>
+        <a href="https://louis-b-work.github.io/help-guides/compare/" target="_blank">Help and guides homepage</a>,
+        <a href="https://louis-b-work.github.io/help-guides/compare-am-i-eligible/" target="_blank">Am I Eligible guide category</a>,
+        <a href="https://louis-b-work.github.io/lp-pistonheads/" target="_blank">PistonHeads landing page</a>,
+        <a href="https://louis-b-work.github.io/cf247/" target="_blank">Car Finance 247 homepage</a>,
+        <a href="https://louis-b-work.github.io/apply/" target="_blank">Apply form</a>.</p></noscript>
     </div>
   </main>
   <footer>Add or reorder prototypes in the DESIGNS list at the bottom of this file.</footer>
 </div>
 
+<script src="emails/partners.js"></script>
 <script>
 // One entry per prototype. size is the width and height the page is laid out at before it is scaled into its window.
 const DESIGNS = [
@@ -121,6 +122,8 @@ DESIGNS.forEach((d) => {
   const a = document.createElement("a");
   a.className = "card";
   a.href = d.url;
+  a.target = "_blank";
+  a.rel = "noopener";
 
   const win = document.createElement("div");
   win.className = "win";
@@ -171,38 +174,32 @@ function fit() { views.forEach(({ view, f, w }) => { f.style.transform = "scale(
 new ResizeObserver(fit).observe(grid);
 fit();
 
-// Email headers: the application received email header, today's and the new brand, for each partner.
-// Each page is sent its partner logo once it has loaded (paths are relative to the emails folder).
-const EMAILS = [
-  { title: "MoneySuperMarket: current", page: "emails/application-received-current.html",
-    cfg: { url: "https://www.carfinance247.co.uk/dA/faaae631c4/msm_logo_v2.webp?t=20261021104240", name: "MoneySuperMarket" } },
-  { title: "MoneySuperMarket: new", page: "emails/application-received.html",
-    cfg: { url: "logos/msm-1-white.svg", name: "MoneySuperMarket" } },
-  { title: "CarGurus: current", page: "emails/application-received-current.html",
-    cfg: { url: "logos/car-gurus.webp", name: "CarGurus" } },
-  { title: "CarGurus: new", page: "emails/application-received.html",
-    cfg: { url: "logos/car-gurus-white.png", name: "CarGurus" } }
-];
+// Email headers: the application received email header for each partner, today's design next to the new one.
+// Each page is sent its partner logo once it has loaded (paths are relative to the emails folder; see emails/partners.js).
 const emails = document.getElementById("emails");
-EMAILS.forEach((e) => {
+function addEmail(title, page, cfg) {
   const box = document.createElement("div");
   box.className = "email";
   const h = document.createElement("h2");
-  h.textContent = e.title;
+  h.textContent = title;
   const f = document.createElement("iframe");
-  f.title = e.title;
+  f.title = title;
   f.loading = "lazy";
   f.addEventListener("load", () => {
-    f.contentWindow.postMessage({ type: "partner", url: e.cfg.url, name: e.cfg.name }, "*");
+    f.contentWindow.postMessage(Object.assign({ type: "partner" }, cfg), "*");
     // show the header at its full height, with no scrolling or cropping
     try {
       const header = f.contentDocument.querySelector(".header");
       new ResizeObserver(() => { f.style.height = header.offsetHeight + "px"; }).observe(header);
     } catch (err) { /* not same-origin: keep the default height */ }
   });
-  f.src = e.page;
+  f.src = page;
   box.append(h, f);
   emails.appendChild(box);
+}
+HEADERS.forEach((h) => {
+  const page = h.page === "new" ? "emails/application-received.html" : "emails/application-received-current.html";
+  addEmail(h.title, page, { url: h.url, name: h.partner, boxed: !!h.boxed, label: h.label !== false });
 });
 
 // Tabs: Prototypes (default) and Email headers, kept in the URL hash so a tab can be linked to.
