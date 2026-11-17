@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Car Finance 247 redesigns</title>
-<meta name="description" content="Links to the Car Finance 247 redesign prototypes: help and guides, PistonHeads landing page, homepage and apply form.">
+<meta name="description" content="Links to the Car Finance 247 redesign prototypes: help and guides, PistonHeads landing page, homepage, apply form and post-application emails.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
@@ -85,7 +85,7 @@
         <a href="https://louis-b-work.github.io/apply/" target="_blank">Apply form</a>.</p></noscript>
     </div>
   </main>
-  <footer>Add or reorder prototypes in the DESIGNS and AB_TESTS lists at the bottom of this file.</footer>
+  <footer>Add prototypes to the DESIGNS and AB_TESTS lists at the bottom of this file. Each has an added date, and the newest are shown first.</footer>
 </div>
 
 <script src="emails/partners.js"></script>
@@ -94,40 +94,55 @@
 const DESIGNS = [
   { title: "Help & Guides homepage",
     description: "Side-by-side comparison of today's guides page, the redesign, and the SEO wireframe.",
+    added: "2026-10-30T09:22",
     url: "https://louis-b-work.github.io/help-guides/compare/", size: [1280, 800] },
   { title: "Help & Guides: Am I Eligible?",
     description: "The Am I Eligible guide category page: today's page next to the redesign, and the wireframe.",
+    added: "2026-10-30T11:40",
     url: "https://louis-b-work.github.io/help-guides/compare-am-i-eligible/", size: [1280, 800] },
   { title: "PistonHeads landing page",
     description: "The PistonHeads advert landing page: today's page next to the redesign and the minimal redesign.",
+    added: "2026-10-30T09:22",
     url: "https://louis-b-work.github.io/lp-pistonheads/", size: [1280, 800] },
   { title: "Car Finance 247 homepage",
     description: "The homepage mockup, with a cog for comparing fonts, weights and the refinance landing page.",
+    added: "2026-10-30T09:22",
     url: "https://louis-b-work.github.io/cf247/", size: [1280, 800] },
   { title: "Apply form",
     description: "The apply form redesign prototype: each step where people leave, built as a switch so it can be A/B tested.",
+    added: "2026-10-30T09:22",
     url: "https://louis-b-work.github.io/apply/", size: [1280, 800] },
   { title: "Members’ Area: finance unavailable",
     description: "The vehicle page when finance is not available: the reason, the deposit or budget fix, and the other options, with a view switch to today’s panel.",
+    added: "2026-11-10T13:55",
     url: "https://louis-b-work.github.io/ma-vdp-finance-redesign/", size: [1280, 800] },
   { title: "Social landing page",
     description: "The social advert landing page vehicle card: the new price, stats and call to action layout, with a view switch to today’s page.",
-    url: "https://louis-b-work.github.io/lp-social/", size: [1280, 800] }
+    added: "2026-11-16T11:02",
+    url: "https://louis-b-work.github.io/lp-social/", size: [1280, 800] },
+  { title: "Post-application emails",
+    description: "The nine emails sent after an application: each original next to the redesign, with a short list of what changed and why.",
+    added: "2026-11-17T15:30",
+    url: "https://louis-b-work.github.io/transactional-comms/", size: [1300, 800] }
 ];
 
 // Designs put forward for A/B tests.
 const AB_TESTS = [
   { title: "PistonHeads landing page",
     description: "The PistonHeads advert landing page: today's page next to the redesign and the minimal redesign.",
+    added: "2026-11-06T14:52",
     url: "https://louis-b-work.github.io/lp-pistonheads/", size: [1280, 800] },
   { title: "CarGurus landing page",
     description: "The CarGurus advert landing page, put forward for an A/B test.",
+    added: "2026-11-06T14:52",
     url: "https://louis-b-work.github.io/lp-cargurus/", size: [1280, 800] },
   { title: "Apply form: Contact details",
     description: "The contact details step (page 2) of the apply form, redesigned and put forward for an A/B test.",
+    added: "2026-11-06T15:04",
     url: "https://louis-b-work.github.io/apply/contact-details-p2/redesign.html", size: [1280, 800] },
   { title: "Apply form: Date of birth",
     description: "The date of birth step of the apply form, redesigned and put forward for an A/B test.",
+    added: "2026-11-06T15:04",
     url: "https://louis-b-work.github.io/apply/date-of-birth/redesign.html", size: [1280, 800] }
 ];
 
@@ -194,6 +209,9 @@ function addCard(d, container) {
   container.appendChild(a);
   views.push({ view, f, w });
 }
+const newestFirst = (a, b) => b.added.localeCompare(a.added); // stable, so equal dates keep their list order
+DESIGNS.sort(newestFirst);
+AB_TESTS.sort(newestFirst);
 DESIGNS.forEach((d) => addCard(d, grid));
 const abgrid = document.getElementById("abgrid");
 AB_TESTS.forEach((d) => addCard(d, abgrid));

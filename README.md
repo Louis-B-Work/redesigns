@@ -7,7 +7,7 @@ Live at https://louis-b-work.github.io/redesigns/
 ## Adding or changing a prototype
 
 Edit the `DESIGNS` list near the bottom of `index.html`. Each entry has a `title`, a one-line `description`, the page `url`
-and a `size` (`[width, height]`) that the page is laid out at before it is scaled into its window.
+an `added` date and time (for example `"2026-11-17T15:30"`) and a `size` (`[width, height]`) that the page is laid out at before it is scaled into its window. The page sorts by `added`, newest first, so a new entry can go anywhere in the list. The A/B tests tab works the same way.
 
 ## How the previews work
 
