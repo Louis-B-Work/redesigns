@@ -33,6 +33,7 @@
   .view iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: top left; pointer-events: none; background: #fff; }
 
   .text h2 { margin: 0; font-size: 1.25rem; line-height: 1.25; }
+  .text .date { display: block; margin-top: 2px; font-size: .8125rem; font-weight: 700; color: var(--purple); }
   .text p { margin: 6px 0 0; font-size: .9375rem; color: rgba(22, 1, 50, .75); }
   .go { display: inline-flex; align-items: center; gap: 6px; align-self: end; font-weight: 700; color: var(--purple); }
   .go svg { width: 12px; height: 12px; transition: transform .25s ease; }
@@ -202,6 +203,13 @@ function addCard(d, container) {
   text.className = "text";
   text.innerHTML = "<h2></h2><p></p>";
   text.querySelector("h2").textContent = d.title;
+  if (d.added) {
+    const t = document.createElement("time");
+    t.className = "date";
+    t.dateTime = d.added;
+    t.textContent = "Added " + new Date(d.added).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+    text.querySelector("h2").after(t);
+  }
   text.querySelector("p").textContent = d.description;
   const go = document.createElement("span");
   go.className = "go";
