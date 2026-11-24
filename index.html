@@ -4,91 +4,100 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Car Finance 247 redesigns</title>
-<meta name="description" content="Links to the Car Finance 247 redesign prototypes: help and guides, PistonHeads landing page, homepage, apply form and transac comms emails.">
+<meta name="description" content="Links to the Car Finance 247 redesign prototypes and A/B test designs.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root { --purple: #6905F2; --purple-10: #F0E6FE; --purple-30: #D2B4FB; --page: #ECE6F7; --ink: #160132; }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.5; background: var(--page); color: var(--ink); }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 20px; }
 
-  header { padding: 40px 0 8px; }
-  h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.25rem); line-height: 1.15; color: var(--purple); }
-  .intro { margin: 10px 0 0; max-width: 40rem; color: rgba(22, 1, 50, .75); }
+  header { padding: 28px 0 0; }
+  h1 { margin: 0; font-size: clamp(1.5rem, 3.5vw, 2rem); line-height: 1.15; color: var(--purple); }
+  .intro { margin: 6px 0 0; color: rgba(22, 1, 50, .75); }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; padding: 24px 0 56px; }
-
-  .card { display: grid; grid-template-rows: auto 1fr; gap: 14px; padding: 14px 14px 18px; color: inherit; text-decoration: none;
-    background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 18px 40px -30px rgba(22, 1, 50, .5); transition: transform .25s ease, box-shadow .25s ease; }
-  .card:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(105, 5, 242, .35), 0 24px 44px -28px rgba(22, 1, 50, .6); }
-  .card:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
-
-  /* The mini browser window: a small title bar over a scaled-down copy of the real page */
-  .win { overflow: hidden; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
-  .bar { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: #F3EFF9; border-bottom: 1px solid rgba(22, 1, 50, .1); }
-  .bar i { width: 9px; height: 9px; border-radius: 50%; background: #cbc3dc; }
-  .addr { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; color: rgba(22, 1, 50, .6); }
-  .view { position: relative; overflow: hidden; background: #fff; }
-  .view iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: top left; pointer-events: none; background: #fff; }
-
-  .text h2 { margin: 0; font-size: 1.25rem; line-height: 1.25; }
-  .text p { margin: 6px 0 0; font-size: .9375rem; color: rgba(22, 1, 50, .75); }
-  .go { display: inline-flex; align-items: center; gap: 6px; align-self: end; font-weight: 700; color: var(--purple); }
-  .go svg { width: 12px; height: 12px; transition: transform .25s ease; }
-  .card:hover .go svg { transform: translateX(3px); }
-
-  .tabs { display: flex; gap: 8px; margin-top: 24px; }
-  .tab { font: inherit; font-weight: 700; padding: 8px 16px; border: 0; border-radius: 999px; cursor: pointer; background: transparent; color: var(--purple); }
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .tabs { display: flex; gap: 6px; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-weight: 700; padding: 7px 8px 7px 16px; border: 0; border-radius: 999px; cursor: pointer; background: transparent; color: var(--purple); }
   .tab:hover { background: var(--purple-10); }
   .tab[aria-selected="true"] { background: var(--purple); color: #fff; }
   .tab:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+  .count { min-width: 1.6em; padding: 0 7px; border-radius: 999px; font-size: .75rem; line-height: 1.6; text-align: center; background: var(--purple-10); color: var(--purple); }
+  .tab[aria-selected="true"] .count { background: rgba(255, 255, 255, .22); color: #fff; }
+
+  .search { flex: 0 1 300px; min-width: 200px; margin-left: auto; }
+  .search input { width: 100%; font: inherit; padding: 8px 14px; border: 0; border-radius: 999px; color: var(--ink); background: #fff; box-shadow: 0 0 0 1px rgba(105, 5, 242, .18); }
+  .search input::placeholder { color: rgba(22, 1, 50, .5); }
+  .search input:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 560px) { .search { flex-basis: 100%; } }
+
   [hidden] { display: none !important; }
 
-  /* breaks out of the 1120px column so two full 600px headers fit side by side */
-  .emails { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 24px 0 56px; width: min(1320px, 100vw - 40px); position: relative; left: 50%; transform: translateX(-50%); }
-  .email { padding: 14px 14px 18px; background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 18px 40px -30px rgba(22, 1, 50, .5); }
-  .email h2 { margin: 0 0 10px; font-size: 1.125rem; line-height: 1.25; }
-  .email iframe { display: block; width: 100%; max-width: 600px; height: 200px; margin: 0 auto; border: 0; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 20px; padding: 20px 0 48px; }
+  .empty { margin: 0; padding: 32px 0 56px; color: rgba(22, 1, 50, .65); }
 
-  @media (max-width: 900px) { .emails { grid-template-columns: minmax(0, 1fr); } }
+  .card { display: grid; grid-template-rows: auto 1fr; gap: 10px; padding: 10px 10px 14px; color: inherit; text-decoration: none;
+    background: #fff; border-radius: 10px; box-shadow: 0 0 0 1px rgba(105, 5, 242, .1), 0 14px 30px -24px rgba(22, 1, 50, .5); transition: transform .25s ease, box-shadow .25s ease; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(105, 5, 242, .35), 0 20px 36px -24px rgba(22, 1, 50, .6); }
+  .card:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
 
-  footer { padding: 0 0 40px; font-size: .8125rem; color: rgba(22, 1, 50, .6); }
+  /* The mini browser window: a slim title bar over a scaled-down copy of the real page */
+  .win { overflow: hidden; border-radius: 6px; background: #fff; box-shadow: 0 0 0 1px rgba(22, 1, 50, .16); }
+  .bar { display: flex; align-items: center; gap: 4px; padding: 5px 8px; background: #F3EFF9; border-bottom: 1px solid rgba(22, 1, 50, .1); }
+  .bar i { width: 7px; height: 7px; border-radius: 50%; background: #cbc3dc; }
+  .addr { margin-left: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .6875rem; color: rgba(22, 1, 50, .6); }
+  .view { position: relative; overflow: hidden; background: #fff; }
+  .view iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: top left; pointer-events: none; background: #fff; }
 
-  @media (prefers-reduced-motion: reduce) { .card, .go svg { transition: none; } .card:hover { transform: none; } .card:hover .go svg { transform: none; } }
+  .text { padding: 0 2px; }
+  .text h2 { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 1rem; line-height: 1.3; }
+  .text h2 svg { flex: none; width: 12px; height: 12px; margin-left: auto; color: var(--purple); opacity: .6; transition: transform .25s ease, opacity .25s ease; }
+  .card:hover .text h2 svg { opacity: 1; transform: translate(2px, -2px); }
+  .text p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin: 4px 0 0; font-size: .8125rem; line-height: 1.45; color: rgba(22, 1, 50, .7); }
+
+  footer { padding: 0 0 32px; font-size: .8125rem; color: rgba(22, 1, 50, .6); }
+
+  @media (prefers-reduced-motion: reduce) { .card, .text h2 svg { transition: none; } .card:hover { transform: none; } .card:hover .text h2 svg { transform: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>Car Finance 247 redesigns</h1>
-    <p class="intro">The design prototypes in one place. Each window is a live, scaled-down view of the real page. Select a card to open it.</p>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-prototypes" aria-controls="panel-prototypes" aria-selected="true">Prototypes</button>
-      <button class="tab" role="tab" id="tab-abtests" aria-controls="panel-abtests" aria-selected="false">A/B tests</button>
-      <button class="tab" role="tab" id="tab-emails" aria-controls="panel-emails" aria-selected="false">Email headers</button>
+    <p class="intro">Design prototypes and A/B tests in one place. Select a card to open it.</p>
+    <div class="toolbar">
+      <div class="tabs" role="tablist" aria-label="Design type">
+        <button class="tab" role="tab" id="tab-prototypes" aria-controls="panel-prototypes" aria-selected="true">Prototypes <span class="count" id="count-prototypes"></span></button>
+        <button class="tab" role="tab" id="tab-abtests" aria-controls="panel-abtests" aria-selected="false" tabindex="-1">A/B tests <span class="count" id="count-abtests"></span></button>
+      </div>
+      <label class="search">
+        <span class="sr-only">Search designs</span>
+        <input type="search" id="q" placeholder="Search designs" autocomplete="off">
+      </label>
     </div>
   </header>
   <main>
+    <section id="panel-prototypes" role="tabpanel" aria-labelledby="tab-prototypes">
+      <div class="grid" id="grid">
+        <noscript><p>Enable JavaScript to see the previews. Links:
+          <a href="https://louis-b-work.github.io/help-guides/compare/" target="_blank">Help and guides homepage</a>,
+          <a href="https://louis-b-work.github.io/help-guides/compare-am-i-eligible/" target="_blank">Am I Eligible guide category</a>,
+          <a href="https://louis-b-work.github.io/lp-pistonheads/" target="_blank">PistonHeads landing page</a>,
+          <a href="https://louis-b-work.github.io/cf247/" target="_blank">Car Finance 247 homepage</a>,
+          <a href="https://louis-b-work.github.io/apply/" target="_blank">Apply form</a>.</p></noscript>
+      </div>
+      <p class="empty" id="empty-prototypes" hidden></p>
+    </section>
     <section id="panel-abtests" role="tabpanel" aria-labelledby="tab-abtests" hidden>
       <div class="grid" id="abgrid"></div>
+      <p class="empty" id="empty-abtests" hidden></p>
     </section>
-    <section id="panel-emails" role="tabpanel" aria-labelledby="tab-emails" hidden>
-      <div class="emails" id="emails"></div>
-    </section>
-    <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-prototypes">
-      <noscript><p>Enable JavaScript to see the previews. Links:
-        <a href="https://louis-b-work.github.io/help-guides/compare/" target="_blank">Help and guides homepage</a>,
-        <a href="https://louis-b-work.github.io/help-guides/compare-am-i-eligible/" target="_blank">Am I Eligible guide category</a>,
-        <a href="https://louis-b-work.github.io/lp-pistonheads/" target="_blank">PistonHeads landing page</a>,
-        <a href="https://louis-b-work.github.io/cf247/" target="_blank">Car Finance 247 homepage</a>,
-        <a href="https://louis-b-work.github.io/apply/" target="_blank">Apply form</a>.</p></noscript>
-    </div>
   </main>
-  <footer>Add prototypes to the DESIGNS and AB_TESTS lists at the bottom of this file. Each has an added date, and the newest are shown first.</footer>
+  <footer>Add designs to the DESIGNS and AB_TESTS lists at the bottom of this file. Each has an added date, and the newest are shown first.</footer>
 </div>
 
-<script src="emails/partners.js"></script>
 <script>
 // One entry per prototype. size is the width and height the page is laid out at before it is scaled into its window.
 const DESIGNS = [
@@ -151,24 +160,26 @@ const AB_TESTS = [
 ];
 
 // The prototypes open a welcome dialog on load. Inside a preview window it would cover the page, so it is hidden with CSS
-// (nothing is clicked, so no saved choices change). All four pages are on the same origin, which is what allows this.
+// (nothing is clicked, so no saved choices change). All the pages are on the same origin, which is what allows this.
 const CALM_CSS = [
   '[role="dialog"]', '[aria-modal="true"]', '#intro', '[class*="bg-blackcurrant/"][class*="fixed"]',
   'html, body { overflow: hidden !important; }'
 ];
 const calmCss = CALM_CSS.slice(0, -1).join(",") + "{display:none !important}" + CALM_CSS[CALM_CSS.length - 1];
 
-const CHEVRON = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2l4 4-4 4"/></svg>';
-const grid = document.getElementById("grid");
+const ARROW = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2h6v6M10 2 3 9"/></svg>';
 const views = [];
 
-function addCard(d, container) {
+// Builds one card and returns its element.
+function makeCard(d) {
   const [w, h] = d.size;
   const a = document.createElement("a");
   a.className = "card";
   a.href = d.url;
   a.target = "_blank";
   a.rel = "noopener";
+  a.title = d.title + ": " + d.description;
+  a.dataset.search = (d.title + " " + d.description).toLowerCase();
 
   const win = document.createElement("div");
   win.className = "win";
@@ -200,75 +211,83 @@ function addCard(d, container) {
 
   const text = document.createElement("div");
   text.className = "text";
-  text.innerHTML = "<h2></h2><p></p>";
-  text.querySelector("h2").textContent = d.title;
+  text.innerHTML = "<h2><span></span>" + ARROW + "</h2><p></p>";
+  text.querySelector("h2 span").textContent = d.title;
   text.querySelector("p").textContent = d.description;
-  const go = document.createElement("span");
-  go.className = "go";
-  go.innerHTML = "Open prototype " + CHEVRON;
 
-  const body = document.createElement("div");
-  body.append(text);
-  a.append(win, body, go);
-  container.appendChild(a);
+  a.append(win, text);
   views.push({ view, f, w });
+  return a;
 }
+
 const newestFirst = (a, b) => b.added.localeCompare(a.added); // stable, so equal dates keep their list order
-DESIGNS.sort(newestFirst);
-AB_TESTS.sort(newestFirst);
-DESIGNS.forEach((d) => addCard(d, grid));
-const abgrid = document.getElementById("abgrid");
-AB_TESTS.forEach((d) => addCard(d, abgrid));
+const lists = {
+  prototypes: { data: DESIGNS, grid: document.getElementById("grid") },
+  abtests: { data: AB_TESTS, grid: document.getElementById("abgrid") }
+};
+Object.keys(lists).forEach((key) => {
+  const list = lists[key];
+  list.data.sort(newestFirst);
+  list.cards = list.data.map((d) => { const c = makeCard(d); list.grid.appendChild(c); return c; });
+  list.count = document.getElementById("count-" + key);
+  list.empty = document.getElementById("empty-" + key);
+});
 
 // Scale each page down so it fills its window exactly.
 function fit() { views.forEach(({ view, f, w }) => { f.style.transform = "scale(" + view.clientWidth / w + ")"; }); }
-new ResizeObserver(fit).observe(grid);
-new ResizeObserver(fit).observe(abgrid);
-fit();
+Object.keys(lists).forEach((key) => new ResizeObserver(fit).observe(lists[key].grid));
 
-// Email headers: the application received email header for each partner, today's design next to the new one.
-// Each page is sent its partner logo once it has loaded (paths are relative to the emails folder; see emails/partners.js).
-const emails = document.getElementById("emails");
-function addEmail(title, page, cfg) {
-  const box = document.createElement("div");
-  box.className = "email";
-  const h = document.createElement("h2");
-  h.textContent = title;
-  const f = document.createElement("iframe");
-  f.title = title;
-  f.loading = "lazy";
-  f.addEventListener("load", () => {
-    f.contentWindow.postMessage(Object.assign({ type: "partner" }, cfg), "*");
-    // show the header at its full height, with no scrolling or cropping
-    try {
-      const header = f.contentDocument.querySelector(".header");
-      new ResizeObserver(() => { f.style.height = header.offsetHeight + "px"; }).observe(header);
-    } catch (err) { /* not same-origin: keep the default height */ }
-  });
-  f.src = page;
-  box.append(h, f);
-  emails.appendChild(box);
-}
-HEADERS.forEach((h) => {
-  const page = h.page === "new" ? "emails/application-received.html" : "emails/application-received-current.html";
-  addEmail(h.title, page, { url: h.url, name: h.partner, boxed: !!h.boxed, label: h.label !== false });
-});
-
-// Tabs: Prototypes (default) and Email headers, kept in the URL hash so a tab can be linked to.
-const TABS = ["prototypes", "abtests", "emails"];
-const panels = { prototypes: grid, abtests: document.getElementById("panel-abtests"), emails: document.getElementById("panel-emails") };
-function showTab(name) {
-  TABS.forEach((t) => {
-    panels[t].hidden = t !== name;
-    document.getElementById("tab-" + t).setAttribute("aria-selected", String(t === name));
+// Search: hides cards that don't match in both tabs, and keeps the tab counts in step.
+const q = document.getElementById("q");
+function applyFilter() {
+  const term = q.value.trim().toLowerCase();
+  Object.keys(lists).forEach((key) => {
+    const list = lists[key];
+    let shown = 0;
+    list.cards.forEach((c) => {
+      const match = !term || c.dataset.search.includes(term);
+      c.hidden = !match;
+      if (match) shown++;
+    });
+    list.count.textContent = shown;
+    list.empty.hidden = shown > 0;
+    list.empty.textContent = "No designs match “" + q.value.trim() + "”.";
   });
   fit();
 }
-TABS.forEach((t) => document.getElementById("tab-" + t).addEventListener("click", () => {
+q.addEventListener("input", applyFilter);
+q.addEventListener("keydown", (e) => { if (e.key === "Escape" && q.value) { q.value = ""; applyFilter(); } });
+applyFilter();
+
+// Tabs: Prototypes (default) and A/B tests, kept in the URL hash so a tab can be linked to.
+const TABS = ["prototypes", "abtests"];
+const panels = { prototypes: document.getElementById("panel-prototypes"), abtests: document.getElementById("panel-abtests") };
+function showTab(name) {
+  TABS.forEach((t) => {
+    const tab = document.getElementById("tab-" + t);
+    panels[t].hidden = t !== name;
+    tab.setAttribute("aria-selected", String(t === name));
+    tab.tabIndex = t === name ? 0 : -1;
+  });
+  fit();
+}
+function selectTab(t) {
   history.replaceState(null, "", t === "prototypes" ? location.pathname : "#" + t);
   showTab(t);
-}));
-showTab(TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "prototypes");
+}
+TABS.forEach((t, i) => {
+  const tab = document.getElementById("tab-" + t);
+  tab.addEventListener("click", () => selectTab(t));
+  tab.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const next = TABS[(i + (e.key === "ArrowRight" ? 1 : TABS.length - 1)) % TABS.length];
+    selectTab(next);
+    document.getElementById("tab-" + next).focus();
+  });
+});
+const fromHash = () => (TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "prototypes");
+window.addEventListener("hashchange", () => showTab(fromHash()));
+showTab(fromHash());
 </script>
 </body>
 </html>
